@@ -1,113 +1,148 @@
 import React, { useEffect, useState } from "react";
-
-const slides = [
-    {
-        image: "https://i.ibb.co/HfjG9Kn5/Skin-W-3.webp",
-    },
-    {
-        image: "https://i.ibb.co/tTkKtgBH/Skin-M-4.webp",
-    },
-    {
-        image: "https://i.ibb.co/HDYkh6pZ/Laser-4.webp",
-    },
-];
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import axios from "axios";
 
 const ClinicInfo = () => {
+    const [newsData, setNewsData] = useState([]);
     const [active, setActive] = useState(0);
 
-    // Auto-slide every 4 seconds
+    const cardsPerSlide = 3;
+    const totalSlides = Math.ceil(newsData.length / cardsPerSlide);
+
+    // Fetch from MongoDB
     useEffect(() => {
-        const interval = setInterval(() => {
-            setActive((prev) => (prev + 1) % slides.length);
-        }, 4000);
-        return () => clearInterval(interval);
+        axios
+            .get("http://localhost:3000/blogs")
+            .then((res) => {
+                setNewsData(res.data);
+            })
+            .catch((err) => {
+                console.error("Error fetching blogs:", err);
+            });
     }, []);
 
-    return (
-        <section className="relative bg-[#f7f5f2] py-16 sm:py-20 overflow-hidden">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+    // Auto slide
+    useEffect(() => {
+        if (totalSlides === 0) return;
 
-                    {/* LEFT: Image Carousel */}
-                    <div
-                        className="
-                        relative
-                        max-w-[580px] 
-                        sm:max-w-[560px] 
-                        md:max-w-[600px] 
-                        lg:max-w-[520px] 
-                        xl:max-w-[560px]
-                        mx-auto"
-                    >
-                        <div className="overflow-hidden rounded-2xl shadow-xl">
-                            <div
-                                className="flex transition-transform duration-700 ease-in-out"
-                                style={{ transform: `translateX(-${active * 100}%)` }}
-                            >
-                                {slides.map((slide, i) => (
-                                    <img
-                                        key={i}
-                                        src={slide.image}
-                                        alt={`Clinic slide ${i + 1}`}
-                                        className="
-                                        w-full 
-                                        h-[200px] sm:h-[300px] md:h-[420px] lg:h-[560px] xl:h-[620px]
-                                        object-cover
-                                        flex-shrink-0"
-                                    />
-                                ))}
+        const interval = setInterval(() => {
+            setActive((prev) => (prev + 1) % totalSlides);
+        }, 5000);
+
+        return () => clearInterval(interval);
+    }, [totalSlides]);
+
+    const nextSlide = () => {
+        setActive((prev) => (prev + 1) % totalSlides);
+    };
+
+    const prevSlide = () => {
+        setActive((prev) => (prev - 1 + totalSlides) % totalSlides);
+    };
+
+    return (
+        <section className="bg-gray-100 py-16 w-full">
+
+            <div className="w-full px-4 md:px-10 lg:px-16">
+
+                <div className="grid lg:grid-cols-4 gap-8 w-full">
+
+                    {/* LEFT CAROUSEL */}
+                    <div className="lg:col-span-3 overflow-hidden relative w-full">
+
+                        {/* Header */}
+                        <div className="flex justify-between items-center">
+                            <div>
+                                <p className="text-teal-600 text-sm">Latest News</p>
+                                <h2 className="text-3xl font-semibold">
+                                    Be the first to read
+                                </h2>
+                            </div>
+
+                            {/* Arrows */}
+                            <div className="flex gap-3">
+                                <button
+                                    onClick={prevSlide}
+                                    className="bg-white shadow p-2 rounded-full border hover:bg-gray-200 transition"
+                                >
+                                    <ChevronLeft size={20} />
+                                </button>
+
+                                <button
+                                    onClick={nextSlide}
+                                    className="bg-white shadow p-2 rounded-full border hover:bg-gray-200 transition"
+                                >
+                                    <ChevronRight size={20} />
+                                </button>
                             </div>
                         </div>
 
-                        {/* Dots */}
-                        <div className="flex justify-center gap-3 mt-6">
-                            {slides.map((_, i) => (
-                                <button
-                                    key={i}
-                                    onClick={() => setActive(i)}
-                                    aria-label={`Go to slide ${i + 1}`}
-                                    className={`w-3 h-3 rounded-full transition-transform duration-300 ${active === i ? "bg-black scale-125" : "bg-gray-400"
-                                        }`}
-                                />
+                        {/* Carousel */}
+                        <div
+                            className="flex transition-transform duration-500 ease-in-out mt-10"
+                            style={{
+                                transform: `translateX(-${active * 100}%)`
+                            }}
+                        >
+                            {Array.from({ length: totalSlides }).map((_, slideIndex) => (
+                                <div
+                                    key={slideIndex}
+                                    className="min-w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+                                >
+                                    {newsData
+                                        .slice(
+                                            slideIndex * cardsPerSlide,
+                                            slideIndex * cardsPerSlide + cardsPerSlide
+                                        )
+                                        .map((item) => (
+                                            <div
+                                                key={item._id}
+                                                className="bg-white rounded-lg shadow-md hover:shadow-xl transition overflow-hidden group"
+                                            >
+                                                <div className="overflow-hidden">
+                                                    <img
+                                                        src={item.image}
+                                                        alt={item.title}
+                                                        className="w-full h-56 object-cover group-hover:scale-110 transition duration-500"
+                                                    />
+                                                </div>
+
+                                                <div className="p-4">
+                                                    <p className="text-sm text-gray-500">
+                                                        {item.date}
+                                                    </p>
+
+                                                    <h3 className="text-lg font-semibold mt-2 group-hover:text-teal-600 transition cursor-pointer">
+                                                        {item.title}
+                                                    </h3>
+
+                                                    <p className="text-gray-600 text-sm mt-2">
+                                                        {item.desc}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                </div>
                             ))}
                         </div>
                     </div>
 
-                    {/* RIGHT: Text Content */}
-                    <div className="px-2 sm:px-0 max-w-xl mx-auto lg:mx-0">
-                        <p className="uppercase text-xs tracking-widest text-[#9a8365] mb-4">
-                            Welcome to our clinic!
-                        </p>
-
-                        <h2 className="text-2xl sm:text-3xl md:text-4xl xl:text-5xl font-semibold text-gray-900 leading-tight mb-6">
-                            Extensive Procedures <br />
-                            to Our Patients.
-                        </h2>
-
-                        <p className="text-gray-600 leading-relaxed mb-8 text-base sm:text-lg">
-                            Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.
-                            Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus.
-                            <br />
-                            <br />
-                            In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
-                            Nullam dictum felis eu pede mollis pretium.
-                        </p>
-
-                        <button className="
-                                group inline-flex items-center gap-4 border border-[#9a8365]
-                                px-6 py-3 text-sm uppercase tracking-widest
-                                text-[#9a8365] hover:bg-[#9a8365]
-                                hover:text-white transition
-                                rounded">
-                            More About Us
-                            <span className="
-                            w-8 h-8 flex items-center justify-center rounded-full
-                            border border-[#9a8365]
-                            group-hover:bg-white
-                            group-hover:text-[#9a8365] transition">
-                                →
-                            </span>
-                        </button>
+                    {/* RIGHT STATIC IMAGE */}
+                    <div className="relative h-[450px] w-full rounded-lg overflow-hidden shadow-lg">
+                        <img
+                            src="https://i.ibb.co/HDYkh6pZ/Laser-4.webp"
+                            alt="Health Insurance"
+                            className="w-full h-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-black/40"></div>
+                        <div className="absolute bottom-6 left-6 text-white z-10">
+                            <h3 className="text-2xl font-semibold">
+                                Health Insurance
+                            </h3>
+                            <p className="text-sm mt-2">
+                                Medcenter with individual approach
+                            </p>
+                        </div>
                     </div>
 
                 </div>

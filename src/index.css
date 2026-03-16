@@ -1,9 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Capriola&display=swap');
 
 @import "tailwindcss";
+
 @plugin "daisyui" {
   themes: light --default;
-};
+}
+
+;
 
 
 @plugin "daisyui/theme" {
@@ -13,9 +16,36 @@
   --color-secondary: teal;
 }
 
-body{
+.home-bg {
+  background: linear-gradient(180deg,
+      #f7fbff 0%,
+      #eef6fb 50%,
+      #ffffff 100%);
+}
+
+body {
   font-family: "Capriola", sans-serif;
   font-weight: 400;
   font-style: normal;
 }
 
+.carousel.carousel-slider {
+    padding-bottom: 40px;
+}
+
+.carousel .control-dots {
+    position: 10px !important;
+    margin-top: auto !important;
+}
+
+.carousel .control-dots .dot {
+    background: #ccc !important;
+    box-shadow: none !important;
+    width: 12px;
+    height: 12px;
+    opacity: 1 !important;
+}
+
+.carousel .control-dots .dot.selected {
+    background: #2563eb !important; 
+}
