@@ -12,7 +12,7 @@ const ClinicInfo = () => {
     // Fetch from MongoDB
     useEffect(() => {
         axios
-            .get("http://localhost:3000/blogs")
+            .get("https://boushahri-clinic.vercel.app/blogs")
             .then((res) => {
                 setNewsData(res.data);
             })

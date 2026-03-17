@@ -7,7 +7,7 @@ const AllIncome = () => {
     const [editingIncome, setEditingIncome] = useState(null);
 
     const fetchIncomes = () => {
-        fetch("http://localhost:3000/expenses")
+        fetch("https://boushahri-clinic.vercel.app/expenses")
             .then(res => res.json())
             .then(data => {
                 // Filter only Cash and Knet (Income types)
@@ -22,7 +22,7 @@ const AllIncome = () => {
 
     const handleDelete = (id) => {
         if (window.confirm('Are you sure you want to delete this income record?')) {
-            axios.delete(`http://localhost:3000/expenses/${id}`)
+            axios.delete(`https://boushahri-clinic.vercel.app/expenses/${id}`)
                 .then(res => {
                     if (res.data.deletedCount > 0) {
                         alert('Deleted successfully!');
@@ -35,7 +35,7 @@ const AllIncome = () => {
 
     const handleUpdate = async (e) => {
         e.preventDefault();
-        axios.put(`http://localhost:3000/expenses/${editingIncome._id}`, editingIncome)
+        axios.put(`https://boushahri-clinic.vercel.app/expenses/${editingIncome._id}`, editingIncome)
             .then(res => {
                 if (res.data.modifiedCount > 0) {
                     alert('Updated successfully!');
@@ -49,7 +49,7 @@ const AllIncome = () => {
     return (
         <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 mt-6 w-full">
             <h2 className="text-2xl font-bold text-gray-800 mb-6 border-b pb-4">All Income Records</h2>
-            
+
             <div className="overflow-x-auto rounded-xl border border-gray-200">
                 <table className="table w-full">
                     <thead>
@@ -77,13 +77,13 @@ const AllIncome = () => {
                                     <td className="text-gray-500 italic">{income.note || 'No note'}</td>
                                     <td>
                                         <div className="flex gap-2">
-                                            <button 
+                                            <button
                                                 onClick={() => setEditingIncome(income)}
                                                 className="btn btn-xs btn-primary gap-1"
                                             >
                                                 <Edit2 size={12} /> Edit
                                             </button>
-                                            <button 
+                                            <button
                                                 onClick={() => handleDelete(income._id)}
                                                 className="btn btn-xs btn-error text-white gap-1"
                                             >
@@ -112,21 +112,21 @@ const AllIncome = () => {
                         <form onSubmit={handleUpdate} className="space-y-4">
                             <div>
                                 <label className="label-text block mb-1 font-medium">Amount</label>
-                                <input 
-                                    type="number" 
+                                <input
+                                    type="number"
                                     step="0.001"
-                                    className="input input-bordered w-full" 
+                                    className="input input-bordered w-full"
                                     value={editingIncome.amount}
-                                    onChange={(e) => setEditingIncome({...editingIncome, amount: e.target.value})}
+                                    onChange={(e) => setEditingIncome({ ...editingIncome, amount: e.target.value })}
                                     required
                                 />
                             </div>
                             <div>
                                 <label className="label-text block mb-1 font-medium">Income Type</label>
-                                <select 
+                                <select
                                     className="select select-bordered w-full"
                                     value={editingIncome.type}
-                                    onChange={(e) => setEditingIncome({...editingIncome, type: e.target.value})}
+                                    onChange={(e) => setEditingIncome({ ...editingIncome, type: e.target.value })}
                                 >
                                     <option value="Cash">Cash (Income)</option>
                                     <option value="Knet">Knet (Income)</option>
@@ -134,19 +134,19 @@ const AllIncome = () => {
                             </div>
                             <div>
                                 <label className="label-text block mb-1 font-medium">Category</label>
-                                <input 
+                                <input
                                     type="text"
-                                    className="input input-bordered w-full" 
+                                    className="input input-bordered w-full"
                                     value={editingIncome.category}
-                                    onChange={(e) => setEditingIncome({...editingIncome, category: e.target.value})}
+                                    onChange={(e) => setEditingIncome({ ...editingIncome, category: e.target.value })}
                                 />
                             </div>
                             <div>
                                 <label className="label-text block mb-1 font-medium">Note (Optional)</label>
-                                <textarea 
-                                    className="textarea textarea-bordered w-full" 
+                                <textarea
+                                    className="textarea textarea-bordered w-full"
                                     value={editingIncome.note}
-                                    onChange={(e) => setEditingIncome({...editingIncome, note: e.target.value})}
+                                    onChange={(e) => setEditingIncome({ ...editingIncome, note: e.target.value })}
                                 />
                             </div>
                             <div className="flex justify-end gap-3 pt-4 border-t">

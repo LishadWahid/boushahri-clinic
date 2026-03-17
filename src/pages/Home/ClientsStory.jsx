@@ -16,7 +16,7 @@ const ClientsStory = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        axios.get('http://localhost:3000/reviews')
+        axios.get('https://boushahri-clinic.vercel.app/reviews')
             .then(res => {
                 setClients(res.data);
                 setLoading(false);

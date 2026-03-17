@@ -6,7 +6,7 @@
 //     const [editingUser, setEditingUser] = useState(null);
 
 //     const fetchUsers = () => {
-//         axios.get('http://localhost:3000/api/users')
+//         axios.get('https://boushahri-clinic.vercel.app/api/users')
 //             .then(res => {
 //                 setUsers(res.data);
 //             })
@@ -19,7 +19,7 @@
 
 //     const handleDelete = (id) => {
 //         if (window.confirm('Are you sure you want to delete this user?')) {
-//             axios.delete(`http://localhost:3000/api/users/${id}`)
+//             axios.delete(`https://boushahri-clinic.vercel.app/api/users/${id}`)
 //                 .then(res => {
 //                     if (res.data.deletedCount > 0) {
 //                         alert('User deleted successfully');
@@ -32,7 +32,7 @@
 
 //     const handleUpdateRole = (e) => {
 //         e.preventDefault();
-//         axios.put(`http://localhost:3000/api/users/${editingUser._id}`, editingUser)
+//         axios.put(`https://boushahri-clinic.vercel.app/api/users/${editingUser._id}`, editingUser)
 //             .then(res => {
 //                 if (res.data.modifiedCount > 0) {
 //                     alert('User updated successfully');
@@ -75,7 +75,7 @@
 //                                         <button
 //                                             onClick={() => {
 //                                                 const newRole = user.role === 'admin' ? 'user' : 'admin';
-//                                                 axios.put(`http://localhost:3000/api/users/${user._id}`, { ...user, role: newRole })
+//                                                 axios.put(`https://boushahri-clinic.vercel.app/api/users/${user._id}`, { ...user, role: newRole })
 //                                                     .then(res => {
 //                                                         if (res.data.modifiedCount > 0) fetchUsers();
 //                                                     });
@@ -148,7 +148,7 @@ const ManageUsers = () => {
     const [editingUser, setEditingUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    const API = "http://localhost:3000/api/users";
+    const API = "https://boushahri-clinic.vercel.app/api/users";
 
     // Fetch Users
     const fetchUsers = async () => {

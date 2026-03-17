@@ -10,12 +10,12 @@ const MasterControl = () => {
 
     const fetchData = () => {
         // Fetch Users
-        fetch("http://localhost:3000/api/users")
+        fetch("https://boushahri-clinic.vercel.app/api/users")
             .then((res) => res.json())
             .then((data) => setUsers(data));
-        
+
         // Fetch All Transactions
-        fetch("http://localhost:3000/expenses")
+        fetch("https://boushahri-clinic.vercel.app/expenses")
             .then((res) => res.json())
             .then((data) => setTransactions(data));
     };
@@ -26,28 +26,28 @@ const MasterControl = () => {
 
     // Filter data for selected user
     const selectedTransactions = transactions.filter(t => t.userEmail === selectedUser);
-    
+
     const userExpenses = selectedTransactions
         .filter(t => t.type === "Expense")
         .reduce((sum, t) => sum + Number(t.amount || 0), 0);
-        
+
     const userIncome = selectedTransactions
         .filter(t => t.type === "Cash" || t.type === "Knet")
         .reduce((sum, t) => sum + Number(t.amount || 0), 0);
-        
+
     const netBalance = userIncome - userExpenses;
 
     const generatePDF = () => {
         try {
             const doc = new jsPDF();
             const userName = users.find(u => u.email === selectedUser)?.name || "User";
-            
+
             doc.setFontSize(18);
             doc.text("Financial Report", 14, 20);
             doc.setFontSize(12);
             doc.text(`User: ${userName} (${selectedUser})`, 14, 30);
             doc.text(`Date: ${new Date().toLocaleDateString()}`, 14, 37);
-            
+
             const tableColumn = ["Date", "Type", "Category", "Amount", "Note"];
             const tableRows = [];
 
@@ -83,12 +83,12 @@ const MasterControl = () => {
     };
 
     const handleDelete = async (id) => {
-        if(window.confirm("Are you sure you want to delete this transaction?")) {
-            const res = await fetch(`http://localhost:3000/expenses/${id}`, {
+        if (window.confirm("Are you sure you want to delete this transaction?")) {
+            const res = await fetch(`https://boushahri-clinic.vercel.app/expenses/${id}`, {
                 method: "DELETE"
             });
             const data = await res.json();
-            if(data.deletedCount > 0) {
+            if (data.deletedCount > 0) {
                 alert("Deleted successfully!");
                 fetchData();
             }
@@ -97,19 +97,19 @@ const MasterControl = () => {
 
     const handleUpdate = async (e) => {
         e.preventDefault();
-        
+
         // Remove _id from payload as MongoDB doesn't allow updating it
         const { _id, ...updateData } = editingTransaction;
-        
+
         try {
-            const res = await fetch(`http://localhost:3000/expenses/${_id}`, {
+            const res = await fetch(`https://boushahri-clinic.vercel.app/expenses/${_id}`, {
                 method: "PUT",
                 headers: { "content-type": "application/json" },
                 body: JSON.stringify(updateData)
             });
             const data = await res.json();
-            
-            if(data.modifiedCount > 0 || data.matchedCount > 0) {
+
+            if (data.modifiedCount > 0 || data.matchedCount > 0) {
                 alert("Updated successfully!");
                 setEditingTransaction(null);
                 fetchData();
@@ -150,11 +150,11 @@ const MasterControl = () => {
                     <div className="flex justify-between items-center mb-4">
                         <h3 className="text-xl font-bold text-gray-800">Financial Overview</h3>
                         <div className="flex gap-2">
-                             <button onClick={generatePDF} className="btn btn-sm btn-outline border-blue-500 text-blue-600">Download PDF</button>
-                             <span className="bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full font-medium flex items-center">{selectedUser}</span>
+                            <button onClick={generatePDF} className="btn btn-sm btn-outline border-blue-500 text-blue-600">Download PDF</button>
+                            <span className="bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full font-medium flex items-center">{selectedUser}</span>
                         </div>
                     </div>
-                    
+
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                         <div className="bg-red-50 p-6 rounded-xl border border-red-100">
                             <p className="text-sm font-semibold text-red-500 uppercase tracking-wider mb-2">Total Expenses</p>
@@ -221,20 +221,20 @@ const MasterControl = () => {
                         <form onSubmit={handleUpdate} className="space-y-4">
                             <div>
                                 <label className="label-text">Amount</label>
-                                <input 
-                                    type="number" 
+                                <input
+                                    type="number"
                                     step="0.001"
-                                    className="input input-bordered w-full" 
+                                    className="input input-bordered w-full"
                                     value={editingTransaction.amount}
-                                    onChange={(e) => setEditingTransaction({...editingTransaction, amount: e.target.value})}
+                                    onChange={(e) => setEditingTransaction({ ...editingTransaction, amount: e.target.value })}
                                 />
                             </div>
                             <div>
                                 <label className="label-text">Type</label>
-                                <select 
+                                <select
                                     className="select select-bordered w-full"
                                     value={editingTransaction.type}
-                                    onChange={(e) => setEditingTransaction({...editingTransaction, type: e.target.value})}
+                                    onChange={(e) => setEditingTransaction({ ...editingTransaction, type: e.target.value })}
                                 >
                                     <option value="Cash">Cash (Income)</option>
                                     <option value="Knet">Knet (Income)</option>
@@ -243,10 +243,10 @@ const MasterControl = () => {
                             </div>
                             <div>
                                 <label className="label-text">Category</label>
-                                <input 
-                                    className="input input-bordered w-full" 
+                                <input
+                                    className="input input-bordered w-full"
                                     value={editingTransaction.category}
-                                    onChange={(e) => setEditingTransaction({...editingTransaction, category: e.target.value})}
+                                    onChange={(e) => setEditingTransaction({ ...editingTransaction, category: e.target.value })}
                                 />
                             </div>
                             <div className="flex justify-end gap-3 pt-4">

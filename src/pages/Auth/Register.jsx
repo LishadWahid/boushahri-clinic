@@ -43,9 +43,9 @@ const Register = () => {
                                     role: 'user',
                                     joined: new Date().toISOString().split('T')[0]
                                 }
-                                axios.post("http://localhost:3000/api/users", userInfo)
+                                axios.post("https://boushahri-clinic.vercel.app/api/users", userInfo)
                                     .then(res => {
-                                        if(res.data.insertedId){
+                                        if (res.data.insertedId) {
                                             console.log('User added to database');
                                         }
                                         navigate('/');
@@ -59,7 +59,8 @@ const Register = () => {
                     .catch(error => {
                         console.log(error)
                     })
-            })}
+            })
+    }
 
 
     const handleGoogleSignIn = () => {
@@ -72,7 +73,7 @@ const Register = () => {
                     role: 'user',
                     joined: new Date().toISOString().split('T')[0]
                 }
-                axios.post("http://localhost:3000/api/users", userInfo)
+                axios.post("https://boushahri-clinic.vercel.app/api/users", userInfo)
                     .then(res => {
                         navigate('/');
                     })

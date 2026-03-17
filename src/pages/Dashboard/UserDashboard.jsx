@@ -10,7 +10,7 @@ const UserDashboard = () => {
 
     const fetchExpenses = async () => {
         try {
-            const res = await fetch("http://localhost:3000/expenses");
+            const res = await fetch("https://boushahri-clinic.vercel.app/expenses");
             const data = await res.json();
             setExpenses(data);
         } catch (error) {
@@ -78,7 +78,7 @@ const UserDashboard = () => {
             {openModal && (
                 <AddExpenseModal closeModal={(isSuccess) => {
                     setOpenModal(false);
-                    if(isSuccess) fetchExpenses();
+                    if (isSuccess) fetchExpenses();
                 }} />
             )}
 

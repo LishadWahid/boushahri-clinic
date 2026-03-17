@@ -24,7 +24,7 @@ const AddExpenseModal = ({ closeModal }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const res = await fetch("http://localhost:3000/expenses", {
+        const res = await fetch("https://boushahri-clinic.vercel.app/expenses", {
             method: "POST",
             headers: {
                 "content-type": "application/json"

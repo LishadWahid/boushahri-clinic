@@ -27,7 +27,7 @@ const ConsultationForm = () => {
         console.log('Form data to send:', formData);
 
         try {
-            const res = await fetch('http://localhost:3000/appointments', {
+            const res = await fetch('https://boushahri-clinic.vercel.app/appointments', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -8,7 +8,7 @@ const ServiceDetails = () => {
     const [service, setService] = useState(null);
 
     useEffect(() => {
-        axios.get(`http://localhost:3000/services/${id}`)
+        axios.get(`https://boushahri-clinic.vercel.app/services/${id}`)
             .then(res => setService(res.data))
             .catch(error => console.error(error));
     }, [id])

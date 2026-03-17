@@ -8,7 +8,7 @@ const AllAppointment = () => {
     const [appointments, setAppointments] = useState([]);
 
     const fetchAppointments = () => {
-        fetch("http://localhost:3000/appointments")
+        fetch("https://boushahri-clinic.vercel.app/appointments")
             .then(res => res.json())
             .then(data => setAppointments(data))
             .catch(err => console.error(err));
@@ -20,7 +20,7 @@ const AllAppointment = () => {
 
     const handleDelete = (id) => {
         if (window.confirm('Are you sure you want to delete this appointment?')) {
-            axios.delete(`http://localhost:3000/appointments/${id}`)
+            axios.delete(`https://boushahri-clinic.vercel.app/appointments/${id}`)
                 .then(res => {
                     if (res.data.deletedCount > 0) {
                         alert('Deleted successfully!');
@@ -75,7 +75,7 @@ const AllAppointment = () => {
                     Download PDF
                 </button>
             </div>
-            
+
             <div className="overflow-x-auto rounded-xl border border-gray-200">
                 <table className="table w-full">
                     <thead>
@@ -103,7 +103,7 @@ const AllAppointment = () => {
                                     <td className="text-gray-600 font-medium">{app.date}</td>
                                     <td>
                                         <div className="flex gap-2">
-                                            <button 
+                                            <button
                                                 onClick={() => handleDelete(app._id)}
                                                 className="btn btn-xs btn-error text-white gap-1"
                                             >

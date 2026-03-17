@@ -13,14 +13,14 @@ const DatabaseManager = () => {
 
     // Load users
     useEffect(() => {
-        fetch("http://localhost:3000/api/users")
+        fetch("https://boushahri-clinic.vercel.app/api/users")
             .then(res => res.json())
             .then(data => setUsers(data));
     }, []);
 
     // Fetch records from expenses collection (unified data source)
     useEffect(() => {
-        fetch("http://localhost:3000/expenses")
+        fetch("https://boushahri-clinic.vercel.app/expenses")
             .then(res => res.json())
             .then(data => {
                 setRecords(data);
@@ -43,10 +43,10 @@ const DatabaseManager = () => {
     const generatePDF = () => {
         try {
             const doc = new jsPDF();
-            
+
             doc.setFontSize(18);
             doc.text("Database Transaction Report", 14, 20);
-            
+
             doc.setFontSize(10);
             doc.text(`Report Period: ${fromDate || 'Start'} to ${toDate || 'Today'}`, 14, 28);
             doc.text(`User Filter: ${selectedUser === 'all' ? 'All Users' : selectedUser}`, 14, 34);
@@ -94,7 +94,7 @@ const DatabaseManager = () => {
             <div className="bg-white shadow rounded-xl p-6 border border-gray-100">
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-xl font-bold text-gray-800">Filter Database Records</h2>
-                    <button 
+                    <button
                         onClick={generatePDF}
                         disabled={filteredRecords.length === 0}
                         className="btn btn-sm btn-primary flex items-center gap-2"
@@ -174,11 +174,10 @@ const DatabaseManager = () => {
                                     <tr key={record._id} className="hover:bg-gray-50 border-b border-gray-100">
                                         <td className="py-4 font-medium">{record.userEmail}</td>
                                         <td>
-                                            <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                                                record.type === 'Expense' ? 'bg-red-100 text-red-700' : 
-                                                record.type === 'Knet' ? 'bg-blue-100 text-blue-700' : 
-                                                'bg-green-100 text-green-700'
-                                            }`}>
+                                            <span className={`px-3 py-1 rounded-full text-xs font-bold ${record.type === 'Expense' ? 'bg-red-100 text-red-700' :
+                                                    record.type === 'Knet' ? 'bg-blue-100 text-blue-700' :
+                                                        'bg-green-100 text-green-700'
+                                                }`}>
                                                 {record.type}
                                             </span>
                                         </td>

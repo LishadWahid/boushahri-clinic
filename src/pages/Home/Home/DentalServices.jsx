@@ -10,7 +10,7 @@ const DentalServices = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get('http://localhost:3000/services')
+        axios.get('https://boushahri-clinic.vercel.app/services')
             .then(res => {
                 setService(res.data);
                 console.log('Api Response:', res.data);

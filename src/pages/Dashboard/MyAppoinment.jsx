@@ -13,7 +13,7 @@ const MyAppoinment = () => {
     useEffect(() => {
         const fetchAppointments = async () => {
             try {
-                const res = await axios.get('http://localhost:3000/appointments');
+                const res = await axios.get('https://boushahri-clinic.vercel.app/appointments');
                 // Filter appointments for the logged-in user
                 const userAppointments = res.data.filter(app => app.email === user?.email);
                 setAppointments(userAppointments);
@@ -31,18 +31,18 @@ const MyAppoinment = () => {
 
     const downloadPDF = () => {
         const doc = new jsPDF();
-        
+
         // Add Title
         doc.setFontSize(20);
         doc.setTextColor(37, 99, 235); // Blue color
         doc.text('Boushahri Clinic - Appointment Report', 14, 22);
-        
+
         doc.setFontSize(12);
         doc.setTextColor(100);
         doc.text(`Patient: ${user?.displayName || 'N/A'}`, 14, 32);
         doc.text(`Email: ${user?.email || 'N/A'}`, 14, 38);
         doc.text(`Date: ${new Date().toLocaleDateString()}`, 14, 44);
-        
+
         // Add Table
         const tableColumn = ["Date", "Service", "Doctor/Person", "Status"];
         const tableRows = appointments.map(app => [
@@ -82,7 +82,7 @@ const MyAppoinment = () => {
                     </h1>
                     <p className="text-gray-500 mt-1">View and manage your scheduled clinic visits.</p>
                 </div>
-                <button 
+                <button
                     onClick={downloadPDF}
                     disabled={appointments.length === 0}
                     className="btn btn-primary bg-blue-600 hover:bg-blue-700 border-none text-white px-6 rounded-xl flex items-center gap-2 transition-all shadow-md hover:shadow-lg disabled:bg-gray-300"

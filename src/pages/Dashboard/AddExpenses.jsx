@@ -7,7 +7,7 @@ const AddExpenses = () => {
     const [editingExpense, setEditingExpense] = useState(null);
 
     const fetchExpenses = () => {
-        fetch("http://localhost:3000/expenses")
+        fetch("https://boushahri-clinic.vercel.app/expenses")
             .then(res => res.json())
             .then(data => {
                 // Filter only 'Expense' type
@@ -22,7 +22,7 @@ const AddExpenses = () => {
 
     const handleDelete = (id) => {
         if (window.confirm('Are you sure you want to delete this expense record?')) {
-            axios.delete(`http://localhost:3000/expenses/${id}`)
+            axios.delete(`https://boushahri-clinic.vercel.app/expenses/${id}`)
                 .then(res => {
                     if (res.data.deletedCount > 0) {
                         alert('Deleted successfully!');
@@ -36,8 +36,8 @@ const AddExpenses = () => {
     const handleUpdate = async (e) => {
         e.preventDefault();
         const { _id, ...updateData } = editingExpense;
-        
-        axios.put(`http://localhost:3000/expenses/${_id}`, updateData)
+
+        axios.put(`https://boushahri-clinic.vercel.app/expenses/${_id}`, updateData)
             .then(res => {
                 if (res.data.modifiedCount > 0 || res.data.matchedCount > 0) {
                     alert('Updated successfully!');
@@ -56,7 +56,7 @@ const AddExpenses = () => {
     return (
         <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 mt-6 w-full">
             <h2 className="text-2xl font-bold text-gray-800 mb-6 border-b pb-4">Manage All Expenses</h2>
-            
+
             <div className="overflow-x-auto rounded-xl border border-gray-200">
                 <table className="table w-full">
                     <thead>
@@ -88,13 +88,13 @@ const AddExpenses = () => {
                                     </td>
                                     <td>
                                         <div className="flex gap-2">
-                                            <button 
+                                            <button
                                                 onClick={() => setEditingExpense(expense)}
                                                 className="btn btn-xs btn-primary gap-1"
                                             >
                                                 <Edit2 size={12} /> Edit
                                             </button>
-                                            <button 
+                                            <button
                                                 onClick={() => handleDelete(expense._id)}
                                                 className="btn btn-xs btn-error text-white gap-1"
                                             >
@@ -123,31 +123,31 @@ const AddExpenses = () => {
                         <form onSubmit={handleUpdate} className="space-y-4">
                             <div>
                                 <label className="label-text block mb-1 font-medium text-gray-700">Amount (KWD)</label>
-                                <input 
-                                    type="number" 
+                                <input
+                                    type="number"
                                     step="0.001"
-                                    className="input input-bordered w-full" 
+                                    className="input input-bordered w-full"
                                     value={editingExpense.amount}
-                                    onChange={(e) => setEditingExpense({...editingExpense, amount: e.target.value})}
+                                    onChange={(e) => setEditingExpense({ ...editingExpense, amount: e.target.value })}
                                     required
                                 />
                             </div>
                             <div>
                                 <label className="label-text block mb-1 font-medium text-gray-700">Category</label>
-                                <input 
+                                <input
                                     type="text"
-                                    className="input input-bordered w-full" 
+                                    className="input input-bordered w-full"
                                     value={editingExpense.category}
-                                    onChange={(e) => setEditingExpense({...editingExpense, category: e.target.value})}
+                                    onChange={(e) => setEditingExpense({ ...editingExpense, category: e.target.value })}
                                     required
                                 />
                             </div>
                             <div>
                                 <label className="label-text block mb-1 font-medium text-gray-700">Note</label>
-                                <textarea 
-                                    className="textarea textarea-bordered w-full" 
+                                <textarea
+                                    className="textarea textarea-bordered w-full"
                                     value={editingExpense.note}
-                                    onChange={(e) => setEditingExpense({...editingExpense, note: e.target.value})}
+                                    onChange={(e) => setEditingExpense({ ...editingExpense, note: e.target.value })}
                                 />
                             </div>
                             <div className="flex justify-end gap-3 pt-4 border-t">

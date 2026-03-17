@@ -18,11 +18,11 @@ const MyReports = () => {
       try {
         setLoading(true);
         // We can simulate fetching or use appointment data as base
-        const res = await axios.get('http://localhost:3000/appointments');
+        const res = await axios.get('https://boushahri-clinic.vercel.app/appointments');
         console.log("All Appointments:", res.data);
         const userAppointments = res.data.filter(app => app.email === user?.email);
         console.log("User Appointments:", userAppointments);
-        
+
         // Transform appointments into "Reports"
         const transformedReports = userAppointments.map((app, index) => ({
           id: `REP-${1000 + index}`,
@@ -50,7 +50,7 @@ const MyReports = () => {
     }
   }, [user]);
 
-  const filteredReports = reports.filter(report => 
+  const filteredReports = reports.filter(report =>
     report.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     report.doctor.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -74,9 +74,9 @@ const MyReports = () => {
         <div className="flex gap-3">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-            <input 
-              type="text" 
-              placeholder="Search reports..." 
+            <input
+              type="text"
+              placeholder="Search reports..."
               className="pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all outline-none w-64"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -94,7 +94,7 @@ const MyReports = () => {
           {filteredReports.map((report) => (
             <div key={report.id} className="group bg-white p-6 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-300 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-24 h-24 bg-blue-50 rounded-bl-full -mr-12 -mt-12 transition-all group-hover:scale-110"></div>
-              
+
               <div className="relative z-10">
                 <div className="flex justify-between items-start mb-4">
                   <div className="p-3 bg-blue-100 text-blue-600 rounded-2xl group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">

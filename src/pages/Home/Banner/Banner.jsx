@@ -12,7 +12,7 @@ const Banner = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get('http://localhost:3000/banners')
+        axios.get('https://boushahri-clinic.vercel.app/banners')
             .then(res => {
                 setBanners(res.data);
                 setLoading(false);
